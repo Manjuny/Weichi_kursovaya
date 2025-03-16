@@ -74,6 +74,10 @@ int loop()
         std::cout << "Введите номер повторяемого правила \n";
         std::cin >> number_line_game;
         print_rules(path, number_line_game);
+        if (number_line_game == '1') 
+        {
+            print_board_game();
+        }
     }
     else if (com=="game")
     {
@@ -240,8 +244,8 @@ void print_board_game()
         {
             point buffer = matrix(points);
             std::cout << std::endl;
-            std::cout << "Проверка координат\n";
-            std::cout << buffer.row << "  " << buffer.col;
+            /*std::cout << "Проверка координат из массива пунктов\n";
+            std::cout << buffer.row << "  " << buffer.col;*/
             std::cout << std::endl;
             std::cout << std::endl;
 
@@ -326,40 +330,9 @@ void change_rock (char print_matrix[18][18],point buffer,char rock)
                 print_matrix[i][j] = rock;
             }
         }
-        std::cout << std::endl;
+       
     }
 } 
-/* switch (switcher2)
- {
- case 'b':
-     rock = 1;
-     std::cout << "  " << rock << "  ";
-
- case 'w':
-     rock = 2;
-
- }*/
-
-//void board_game(int switcher)
-//{
-//   
-//    char rock = '|';
-//    
-//    switch (switcher)
-//        {
-//        case '0':
-//            rock = '|';
-//        std::cout << "  " << rock << "  ";
-//    
-//        case '1':
-//            rock = 1;
-//        std::cout << "  " << rock << "  ";
-//     
-//        case '2':
-//            rock = 2;
-//        std::cout << "  " << rock << "  ";
-//        }      
-//}
 
 
 
