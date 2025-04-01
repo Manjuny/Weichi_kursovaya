@@ -86,13 +86,12 @@ int loop()
         {
             board_game();
         }
-
-
+        else std::cout << "Основных правил 3 остальные в разработке";
     }
     else if (com=="game")
     {
         std::cout << "Здесь можно поиграть" << std::endl;
-        board_game();
+            board_game();
     }
 
 
