@@ -21,14 +21,14 @@ const int SIZE_row = 18; const int SIZE_col = 18;
 typedef struct read_t read_t;
 
 read_t read_file(const char*);
-void print_board_clear(char[18][18]);
+void print_board(char[18][18],int,int);
 void board_game();
 void print_rules(const char*, char);
 int loop();
 point matrix(point);
 char switch_color(char);
-void change_rock(char[18][18], point, char);
-void create_board(char [18][18])
+void change_rock(char[18][18], point, char, int,int);
+void create_board(char[18][18],int, int);
 
 
 
@@ -40,10 +40,9 @@ int main()
 
 int loop()
 {
-    const int SIZE_row = 18;
-    const int SIZE_col = 18;
     char print_matrix[SIZE_row][SIZE_col];
-    print_board_clear(print_matrix);
+    create_board(print_matrix, SIZE_row, SIZE_col);
+    print_board(print_matrix,SIZE_row,SIZE_col);
     
     std::cout << std::endl;
     std::cout << std::endl;
@@ -77,12 +76,23 @@ int loop()
         print_rules(path, number_line_game);
         if (number_line_game == '1') 
         {
-            print_board_game();
+           board_game();
+        }else
+        if (number_line_game == '2')
+        {
+            board_game();
         }
+        if (number_line_game == '3')
+        {
+            board_game();
+        }
+
+
     }
     else if (com=="game")
     {
-        print_board_game();
+        std::cout << "Здесь можно поиграть" << std::endl;
+        board_game();
     }
 
 
@@ -107,7 +117,6 @@ read_t read_file(const char* path) {
         return r;
    
 }
-
 void print_rules(const char* path,  char number_line_text_char )
 {
     read_t r;
@@ -136,7 +145,7 @@ void print_rules(const char* path,  char number_line_text_char )
     
 
 }
-void create_board_clear(char print_matrix[18][18], const int SIZE_row, const int SIZE_col) {
+void create_board(char print_matrix[18][18], const int SIZE_row, const int SIZE_col) {
      for (int i = 0; i < SIZE_row;i++)
     {
         if (i == 0)
@@ -198,7 +207,6 @@ void create_board_clear(char print_matrix[18][18], const int SIZE_row, const int
             }
     }
 }
-
 void print_board(char print_matrix[18][18], const int SIZE_row, const int SIZE_col)
 {
     std::cout << "Доска 9х9 \n";
@@ -258,19 +266,17 @@ void print_board(char print_matrix[18][18], const int SIZE_row, const int SIZE_c
         std::cout << std::endl;      
     }
 }
-
 void board_game()
 { 
-    const int SIZE_row = 18;
-    const int SIZE_col = 18;
     char print_matrix[SIZE_row][SIZE_col];
-    int switcher = 1;
+
     char switcher2 = ' ';
     point buffer;
     int lines = 0;
-    char rock = '|';
+    char rock = ' ';
     point points{};
-    print_board_clear(print_matrix);
+    create_board(print_matrix,SIZE_row, SIZE_col);
+    print_board(print_matrix, SIZE_row, SIZE_col);
     while (true) 
     {
     std::cout << std::endl;
@@ -296,12 +302,12 @@ void board_game()
             std::cout << std::endl;
             std::cout << std::endl;*/
 
-            change_rock(print_matrix, buffer, rock);
+            change_rock(print_matrix, buffer, rock, SIZE_row, SIZE_col);
 
             std::cout << std::endl;
             std::cout << std::endl;
 
-            print_board_clear(print_matrix);
+            print_board(print_matrix, SIZE_row, SIZE_col);
          /*   for (int i = 0;i < SIZE_row;i++)//сделано для проверки записи матрицы
             {
                 for (int j = 0;j < SIZE_col;j++)
@@ -348,7 +354,7 @@ point matrix(point points)
     return buffer;
 
 }
-char switch_color (char switcher2,char rock)
+char switch_color (char switcher2)
  {
     char rock;
     switch (switcher2) {
@@ -362,19 +368,16 @@ char switch_color (char switcher2,char rock)
         return rock;
         break;
     case 'z':
-        rock = '|';
+        rock = 124;
         return rock;
         break;
+    default:  std::cout << "Выберите один из предложенных вариантов" << std::endl;
+        break;
     }
-
- }
-void change_rock (char print_matrix[18][18],point buffer,char rock)
+   
+}
+void change_rock (char print_matrix[18][18],point buffer,char rock,const int SIZE_row, const int SIZE_col)
 {
-    
-    const int SIZE_row = 18;
-    const int SIZE_col = 18;
-    
-    
     for (int i = 0;i < SIZE_row;i++)
     {
        
