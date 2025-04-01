@@ -16,18 +16,19 @@ struct read_t {
     int err;
     std::string text;
 };
+const int SIZE_row = 18; const int SIZE_col = 18;
 
 typedef struct read_t read_t;
 
 read_t read_file(const char*);
 void print_board_clear(char[18][18]);
-void print_board_game();
+void board_game();
 void print_rules(const char*, char);
 int loop();
 point matrix(point);
 char switch_color(char);
 void change_rock(char[18][18], point, char);
-
+void create_board(char [18][18])
 
 
 
@@ -135,17 +136,8 @@ void print_rules(const char* path,  char number_line_text_char )
     
 
 }
-
-void print_board_clear(char print_matrix[18][18])
-{
-    std::cout << "Ваша пустая доска 9х9 \n";
-    const int SIZE_row = 18;
-    const int SIZE_col = 18;  
-   
-    char rock_nul = '|';
-    std::cout << std::endl;
-    std::cout << std::endl;
-    for (int i = 0; i < SIZE_row;i++)
+void create_board_clear(char print_matrix[18][18], const int SIZE_row, const int SIZE_col) {
+     for (int i = 0; i < SIZE_row;i++)
     {
         if (i == 0)
         {
@@ -154,12 +146,12 @@ void print_board_clear(char print_matrix[18][18])
                 if (j % 2 == 0)
                 {
                     print_matrix[i][j] = j / 2 + 49;
-                    std::cout << " " << print_matrix[i][j] << " ";
+
                 }
                 else
                 {
                     print_matrix[i][j] = ' ';
-                    std::cout << " " << print_matrix[i][j] << " ";
+
                 }
             }
 
@@ -172,12 +164,12 @@ void print_board_clear(char print_matrix[18][18])
                 if (j % 2 != 0)
                 {
                     print_matrix[i][j] = ' ';
-                    std::cout << " " << print_matrix[i][j] << " ";
+
                 }
                 else
                 {
                     print_matrix[i][j] = '|';
-                    std::cout << " " << print_matrix[i][j] << " ";
+
                 }
             }
         }
@@ -188,17 +180,76 @@ void print_board_clear(char print_matrix[18][18])
                     if (j == 17)
                     {
                         print_matrix[i][j] = i / 2 + 49;
-                        std::cout << " " << print_matrix[i][j];
+
                     }
                     else if (j % 2 == 0)
                     {
 
-                        print_matrix[i][j] = rock_nul;
-                        std::cout << "_" << print_matrix[i][j] << " ";
+                        print_matrix[i][j] = '|';
+
                     }
                     else if (j % 2 != 0)
                     {
                         print_matrix[i][j] = '_';
+
+                    }
+
+                }
+            }
+    }
+}
+
+void print_board(char print_matrix[18][18], const int SIZE_row, const int SIZE_col)
+{
+    std::cout << "Доска 9х9 \n";
+    std::cout << std::endl;
+    std::cout << std::endl;
+    for (int i = 0; i < SIZE_row;i++)
+    {
+        if (i == 0)
+        {
+            for (int j = 0; j < SIZE_col; j++)
+            {
+                if (j % 2 == 0)
+                {
+                    std::cout << " " << print_matrix[i][j] << " ";
+                }
+                else
+                {
+                    std::cout << " " << print_matrix[i][j] << " ";
+                }
+            }
+
+        }
+        else if (i % 2 == 0)
+        {
+            for (int j = 0; j < SIZE_col; j++)
+            {
+
+                if (j % 2 != 0)
+                {
+                    std::cout << " " << print_matrix[i][j] << " ";
+                }
+                else
+                {
+                    std::cout << " " << print_matrix[i][j] << " ";
+                }
+            }
+        }
+        else
+            if (i % 2 != 0) {
+                for (int j = 0; j < SIZE_col; j++)
+                {
+                    if (j == 17)
+                    {
+                        std::cout << " " << print_matrix[i][j];
+                    }
+                    else if (j % 2 == 0)
+                    {
+                        std::cout << "_" << print_matrix[i][j] << " ";
+                    }
+                    else if (j % 2 != 0)
+                    {
                         std::cout << "_" << print_matrix[i][j] << "_";
                     }
 
@@ -208,62 +259,61 @@ void print_board_clear(char print_matrix[18][18])
     }
 }
 
-void print_board_game()
-{
-   
-        const int SIZE_row = 18;
-        const int SIZE_col = 18;
-        char print_matrix[SIZE_row][SIZE_col];
-        int switcher = 1;
-        char switcher2 = ' ';
-        point buffer;
-        int lines = 0;
-        char rock_nul = '|';
-        char rock = '|';
-        point points{};
-        print_board_clear(print_matrix);
-       
-        std::cout << std::endl;
-        std::cout << "Ваш ход\n";
-        std::cout << "Выберите цвет камня w - для белого, b - для черного\n";
-        std::cin >> switcher2;//пока выбор камня в ручную по идее нужно циклическое переключение между 2-мя цветами начиная с черного
+void board_game()
+{ 
+    const int SIZE_row = 18;
+    const int SIZE_col = 18;
+    char print_matrix[SIZE_row][SIZE_col];
+    int switcher = 1;
+    char switcher2 = ' ';
+    point buffer;
+    int lines = 0;
+    char rock = '|';
+    point points{};
+    print_board_clear(print_matrix);
+    while (true) 
+    {
+    std::cout << std::endl;
+    std::cout << "Ваш ход\n";
+    std::cout << "Выберите цвет камня w - для белого, b - для черного, z- чтобы убрать камень с доски\n";
+    std::cin >> switcher2;//пока выбор камня в ручную по идее нужно циклическое переключение между 2-мя цветами начиная с черного
         rock = switch_color(switcher2);
-
-        std::cout << "Введите вашу координату по горизонтали\n";
-        std::cin >> points.row;
-        std::cout << "Введите вашу координату по вертикали\n";
-        std::cin >> points.col;
-
-
+    std::cout << "Введите вашу координату по горизонтали\n";
+    std::cin >> points.row;
+    std::cout << "Введите вашу координату по вертикали\n";
+    std::cin >> points.col;
+      //  bool detect = true;
         if (points.row == 0 && points.col == 0)
         {
-            std::cout << "Начните игру снова\n";
-
+            std::cout << "Начните игру снова\n";    
         }
         else
         {
             point buffer = matrix(points);
             std::cout << std::endl;
             /*std::cout << "Проверка координат из массива пунктов\n";
-            std::cout << buffer.row << "  " << buffer.col;*/
+            std::cout << buffer.row << "  " << buffer.col;
+            std::cout << std::endl;
+            std::cout << std::endl;*/
+
+            change_rock(print_matrix, buffer, rock);
+
             std::cout << std::endl;
             std::cout << std::endl;
 
-            change_rock(print_matrix, buffer, rock);
-            
-            std::cout << std::endl;
-            std::cout << std::endl;
-            for (int i = 0;i < SIZE_row;i++)//сделано для проверки записи матрицы
+            print_board_clear(print_matrix);
+         /*   for (int i = 0;i < SIZE_row;i++)//сделано для проверки записи матрицы
             {
                 for (int j = 0;j < SIZE_col;j++)
                 {
                     std::cout << print_matrix[i][j];
                 }
                 std::cout << std::endl;
-            }
+            }*/
             std::cout << std::endl;
             system("pause");
         }
+    }
 }
 point matrix(point points)
 {   
@@ -298,9 +348,9 @@ point matrix(point points)
     return buffer;
 
 }
-char switch_color (char switcher2)
+char switch_color (char switcher2,char rock)
  {
-    char rock{};
+    char rock;
     switch (switcher2) {
 
     case 'b':
@@ -311,7 +361,12 @@ char switch_color (char switcher2)
         rock = 2;
         return rock;
         break;
+    case 'z':
+        rock = '|';
+        return rock;
+        break;
     }
+
  }
 void change_rock (char print_matrix[18][18],point buffer,char rock)
 {
@@ -320,7 +375,7 @@ void change_rock (char print_matrix[18][18],point buffer,char rock)
     const int SIZE_col = 18;
     
     
-    for (int i = 0;i < SIZE_row;i++)//сделано для проверки записи матрицы
+    for (int i = 0;i < SIZE_row;i++)
     {
        
         for (int j = 0;j < SIZE_col;j++)
